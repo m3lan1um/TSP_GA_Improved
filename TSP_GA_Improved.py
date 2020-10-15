@@ -29,8 +29,8 @@ import time
 # Global Variables
 # Genetic Algorithm
 POOL_SIZE = 100
-RANDOM_RATIO = 0.1
-ITERATIONS = 20000
+RANDOM_RATIO = 0.5
+ITERATIONS = 8000
 K = 10
 np.random.seed(0)
 
