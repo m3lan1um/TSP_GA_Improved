@@ -28,10 +28,10 @@ import time
 
 # Global Variables
 # Genetic Algorithm
-POOL_SIZE = 100
-RANDOM_RATIO = 0.5
-ITERATIONS = 8000
-K = 10
+POOL_SIZE = 200
+RANDOM_RATIO = 0.8
+ITERATIONS = 10000
+K = 20
 np.random.seed(0)
 
 # Plot Settings
@@ -121,7 +121,7 @@ def initialize_greedy(coord_list, first_idx):
         rank_list[sorted_ave_list[rank]] += rank
         rank_list[sorted_std_list[rank]] += rank
     sorted_priority_list = np.argsort(rank_list)
-    first_city_idx = sorted_priority_list[-first_idx]
+    first_city_idx = sorted_priority_list[-(first_idx + 1)]
 
     path = np.zeros(cnt_cities + 1, dtype=np.int)
     path[0], path[-1] = first_city_idx, first_city_idx
@@ -189,8 +189,9 @@ def initialization(coord_list):
 
     path_map, path_pool[0, :] = initialize_greedy(coord_list, FIRST_IDX)
     pool_cost[0] = path_cost(path_map, path_pool[0, :]).sum()
+
     for i in range(1, num_random + 1):
-        _, path_pool[i, :] = initialize_greedy(coord_list, i + 1)
+        _, path_pool[i, :] = initialize_random(coord_list, i)
         pool_cost[i] = path_cost(path_map, path_pool[i, :]).sum()
 
     for i in range(num_random + 1, POOL_SIZE):
@@ -241,7 +242,7 @@ def crossover(path1, path2):
     if sel_idx[0] > sel_idx[1]:
         sel_idx[0], sel_idx[1] = sel_idx[1], sel_idx[0]
 
-    for i in range(sel_idx[0], sel_idx[1]):
+    for i in range(sel_idx[0], sel_idx[1] + 1):
         # Swap Points
         temp1, temp2 = child1[i], child2[i]
         child1[i], child1[plist1[temp2]] = temp2, temp1
